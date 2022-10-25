@@ -1,0 +1,49 @@
+#include<stdio.h>   //Header File for I/O functions
+#include<stdlib.h>  //Header File for exit() function
+#include<windows.h> //Header File for Sleep() function
+#include<string.h>  //Header File for String functions
+FILE * fp; //This is File Pointer. It is a special type of pointer which assists us in
+//handling files in C Programs.
+char code[11], ch; //Global Variables Declaration. "code" will be used to get a password from the
+//user using the keyboard whereas "ch" will be used to read data from a file.
+char passcode[11] = "12345"; //"passcode" holds actual password for file named data.txt.
+//openfile() is a user-defined function used to open and read file.
+void openfile() {
+    fp = fopen("data.txt", "r"); //opening file in read mode.
+    if (fp == NULL) //checking for any errors in opening.
+        printf("\n\t\t\t\tFile can't be opened.\n");
+    else { //if no errors are there file will be opened .
+        printf("\n\t\t\t\tOpening File...wait\n");
+        // Printing what is written in file.
+        // character by character using loop.
+        do {
+            ch = fgetc(fp);
+            printf("%c", ch);
+            // Checking if character is not EOF.
+            // If it is EOF stop reading.
+        } while (ch != EOF);
+        // Closing the file
+        fclose(fp);
+        printf("\n\t\t\t\tFile has been closed.");
+    }
+} //openfile() defination ends here
+//check() is used to prompt for password and verify before opening file.
+void check() {
+    printf("\n\t\t\t\tEnter File Password:\t");
+    gets(code); //takeing code as input from user
+    fflush(stdin); //fflush(stdin) is an inbuilt function used to clear input stream buffers.
+    if (strcmp(code, passcode) == 0)
+        //comparing user-entered password with actual password using strcmp().
+        openfile();
+    else {
+        printf("\n\t\t\t\tWrong Password...System is Closing for security concerns.");
+        Sleep(500); //Sleep() function is used to pause the execution for a given number of seconds.
+        exit(0); //exit(0) function is used to terminate the program immediately.
+    }
+}
+//Driver Program
+//main() function starts from here
+int main() {
+    check(); //caling check() function
+    return 0;
+} //end of main()
